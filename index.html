@@ -650,11 +650,11 @@
 
   // Filter mobs if a filter is active
   let filteredMobs = mobs;
-  if (currentFilter) {
-    filteredMobs = mobs.filter(function (mob) {
-      return mob.category && mob.category.toLowerCase() === currentFilter.toLowerCase();
-    });
-  }
+ if (currentFilter) {
+  filteredMobs = mobs.filter(function (mob) {
+    return mob.category && mob.category.includes(currentFilter);
+  });
+}
 
   // Create a card for each mob
   filteredMobs.forEach(function (mob) {
