@@ -684,23 +684,18 @@
 
     // Filter mobs by category
     function filterBy(category) {
-      // Toggle filter on/off
-      if (category === currentFilter) {
-        currentFilter = null;
-      } else {
-        currentFilter = category;
-      }
+  currentFilter = category;
+}
 
 
       // Re-render mobs with the current filter
       renderMobs(allMobs);
 
       // Update UI to show the active filter
-      const filterButtons = document.querySelectorAll('.accordion-content a');
+   const filterButtons = document.querySelectorAll('.accordion-content a');
       filterButtons.forEach(function (btn) {
-        const isActive = btn.textContent.trim().toLowerCase() === category.toLowerCase();
-
-        if (isActive && currentFilter === category) {
+        const filterValue = btn.getAttribute('onclick').match(/'([^']+)'/)[1];
+        if (filterValue === category) {
           btn.style.color = '#26da19';
           btn.style.fontWeight = 'bold';
         } else {
@@ -828,10 +823,21 @@
     }
 
     // Clear search and show all mobs
-    function clearSearch() {
-      document.getElementById('search-key').value = '';
-      renderMobs(allMobs);
-    }
+function clearSearch() {
+  document.getElementById('search-key').value = '';
+  currentFilter = null; // clear active filter too
+  renderMobs(allMobs);
+
+  // Reset filter button styles
+  const filterButtons = document.querySelectorAll('.accordion-content a');
+  filterButtons.forEach(function (btn) {
+    btn.style.color = 'black';
+    btn.style.fontWeight = 'normal';
+  });
+
+  // Hide the clear button
+  document.querySelector('.clear-search-button').style.display = 'none';
+}
 
     // ===== LOGIN SYSTEM FUNCTIONS =====
     const loginBtn = document.getElementById('login-btn');
@@ -979,6 +985,9 @@ document.getElementById('slain-btn').addEventListener('click', function(e) {
 
 // Initialize the app when page loads
 window.addEventListener('DOMContentLoaded', init);
+
+    // Make filterBy function available globally
+window.filterBy = filterBy;
   </script>
 </body>
 </html>
